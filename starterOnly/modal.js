@@ -20,4 +20,18 @@ function launchModal() {
   modalbg.style.display = "block";
 }
 
+// make the modal form disappear with the fade out effect
+function fadeOutModal(){
+  modalbg.style.animation = "fadeOut 0.4s";
+  modalbg.addEventListener("animationend", closeModal);
+  
+}
+
+// close the modal form
+function closeModal() {
+  modalbg.style.display = "none";
+  modalbg.style.animation = "";
+  modalbg.removeEventListener("animationend", closeModal);
+}
+
 
