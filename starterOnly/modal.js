@@ -11,6 +11,8 @@ function editNav() {
 const modalbg = document.querySelector(".bground");
 const modalBtn = document.querySelectorAll(".modal-btn");
 const formData = document.querySelectorAll(".formData");
+const formReserve = document.getElementById("reserve");
+const modalbgm = document.querySelector(".bgroundM");
 
 // launch modal event
 modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
@@ -30,11 +32,30 @@ function fadeOutModal(){
 function closeModal() {
   modalbg.style.display = "none";
   modalbg.style.animation = "";
+  formReserve.reset();
+  clearForm();
   modalbg.removeEventListener("animationend", closeModal);
+}
+
+//launch confirmation message
+function launchConfirmation(){
+  modalbgm.style.display = "block";
+  modalbgm.style.animation = "fadeOut 2s 3s forwards";
+  setTimeout(() => {
+    modalbgm.addEventListener("animationend", closeConfirmation);  
+  }, 1000);
+}
+
+// close the confirmation message
+function closeConfirmation() {
+  modalbgm.style.display = "none";
+  modalbgm.style.animation = "";
+  modalbgm.removeEventListener("animationend", closeConfirmation);
 }
 
 //check if every input, component of the form to see if if it validates
 function validate(){
+  event.preventDefault();
   let cptErrors = 0;
   if(!validateFirst()){
     cptErrors += 1;
@@ -59,8 +80,12 @@ function validate(){
   }
   
   if (cptErrors > 0){
+    //fadeOutModal();
+    //launchConfirmation();
     return false;
   }else{
+    fadeOutModal();
+    launchConfirmation();
     return true;
   }
 }
@@ -191,6 +216,24 @@ function borderWrong(wDom){
   wDom.style.border = "3px solid red";
 }
 
+//clear the form by suppressing the border of the input and eventually the error messages
+ function clearForm(wDom){
+  inputFirst.style.border = "none";
+  inputLast.style.border = "none";
+  inputEmail.style.border = "none";
+  inputBirthDate.style.border = "none";
+  inputQuantity.style.border = "none";
+  removeErrorMessage(inputFirst);
+  removeErrorMessage(inputLast);
+  removeErrorMessage(inputEmail);
+  removeErrorMessage(inputBirthDate);
+  removeErrorMessage(inputQuantity);
+  removeErrorMessage(checkboxLocation);
+  removeErrorMessage(checkbox1);
+ }
+
+
+
 //display an erro message below the dom element
 function displayErrorMessage(wDom, wMessage){
   const divElement = wDom.parentElement;
@@ -200,7 +243,6 @@ function displayErrorMessage(wDom, wMessage){
     wP.style.fontSize = "12px";
     
     wP.innerHTML = `<b>${wMessage}</b>`;
-    console.log(wP.innerHTML);
     divElement.appendChild(wP);
   }
 }
